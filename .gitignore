@@ -21,6 +21,7 @@ backend/portfolio.db-wal
 *.sqlite3
 .eslintcache
 coverage/
+.vercel/
 
 # Editor directories and files
 .vscode/*

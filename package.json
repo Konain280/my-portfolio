@@ -8,12 +8,20 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:api": "node --watch backend/server.js",
+    "setup:admin": "node backend/setup-admin.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check": "npm run lint && npm run build"
+    "test": "node --test",
+    "check:api": "node --check backend/server.js && node --check backend/setup-admin.js && node scripts/check-production.js",
+    "check": "npm run lint && npm run build && npm run check:api && npm test"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
@@ -22,6 +30,8 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^17.4.2",
     "eslint": "^10.8.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",

@@ -1,132 +1,83 @@
-# Konain Tahir — Developer Portfolio
+# Konain Tahir — Full-Stack Portfolio
 
-A responsive full-stack portfolio for Konain Tahir. The public React site presents projects, skills, education, a downloadable CV, and a contact form. The Express API stores enquiries in SQLite, sends Gmail notifications, and exposes a JWT-protected admin inbox.
+A responsive React portfolio deployed as one Vercel project. Vite builds the frontend, Vercel Node.js Functions provide the API, Neon Serverless Postgres stores contact messages, and Gmail sends notifications.
 
-## Features
+## Architecture
 
-- Responsive dark/purple interface with accessible mobile navigation
-- About, skills, projects, education, and contact sections
-- Downloadable CV and profile image
-- Validated contact form with loading/error states and spam protection
-- SQLite contact storage using a stable configurable path
-- Gmail notifications through Nodemailer
-- Bcrypt admin password verification and expiring JWT sessions
-- Private inbox with refresh, mark-read, and delete controls
-- Exact-origin CORS, request-size limits, and endpoint rate limits
-- SEO and Open Graph metadata
-
-## Tech stack
-
-- Frontend: React 19, Vite 8, JavaScript, CSS
-- Backend: Node.js, Express 5
-- Database: SQLite with `better-sqlite3`
-- Authentication: bcrypt and JSON Web Tokens
+- Frontend: React 19 and Vite 8, served from `dist/`
+- API: Vercel Node.js Functions in `api/`
+- Production database: Neon Serverless Postgres through the Vercel Marketplace
+- Local/test database: SQLite through `better-sqlite3`
+- Authentication: bcrypt admin password verification and two-hour JWT sessions
 - Email: Nodemailer with a Gmail App Password
 
-## Folder structure
+The frontend and API use the same Vercel origin. Browser requests use `/api/...`; no API hostname or secret is compiled into the frontend.
 
-```text
-my-portfolio/
-├── public/                 # Profile photo, CV, and favicon
-├── src/
-│   ├── components/        # Portfolio sections and admin dashboard
-│   ├── api.js             # Configurable API client
-│   ├── App.jsx
-│   ├── App.css
-│   └── main.jsx
-├── backend/
-│   ├── test/              # Isolated API integration test
-│   ├── auth.js
-│   ├── database.js
-│   ├── server.js
-│   └── setup-admin.js
-├── render.yaml            # Render backend/persistent-disk blueprint
-└── vercel.json            # Vercel SPA rewrite for /admin
-```
+## API routes
 
-## Requirements
+| Route | Method | Purpose |
+|---|---|---|
+| `/api/health` | GET | Database, authentication configuration, and email status |
+| `/api/contact` | POST | Validate and save a contact message, then notify by email |
+| `/api/login` | POST | Authenticate the administrator and issue a JWT |
+| `/api/contact` | GET | Return messages to an authenticated administrator |
+| `/api/contact/:id/read` | PATCH | Mark a message as read |
+| `/api/contact/:id` | DELETE | Delete a message |
 
-- Node.js 22.12 or newer (the minimum supported by the current Vite toolchain)
-- npm
-- A new Gmail App Password for real email notifications
+## Install and verify
 
-## Install
+Requirements: Node.js 22.12 or newer and npm.
 
 ```powershell
 Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
 npm.cmd install
-Set-Location backend
-npm.cmd install
+npm.cmd run check
 ```
+
+`npm run check` runs ESLint, the Vite production build, API syntax/configuration checks, SQLite database tests, authentication tests, contact tests, and admin workflow tests.
 
 ## Environment variables
 
-Create the frontend environment file:
+Copy `.env.example` to `.env` for local API development. `.env` is ignored by Git.
+
+| Variable | Production | Visibility | Purpose |
+|---|---|---|---|
+| `DATABASE_URL` | Required | Secret | Neon pooled PostgreSQL connection string; normally injected by the Vercel Neon integration |
+| `CLIENT_ORIGIN` | Recommended | Normal | Exact public site origin, such as `https://example.com`; comma-separated origins are supported |
+| `EMAIL_USER` | Required for notifications | Normal | Gmail address used to send and receive notifications |
+| `EMAIL_APP_PASSWORD` | Required for notifications | Secret | Gmail App Password, never the normal Google password |
+| `ADMIN_USERNAME` | Required | Normal | Private admin inbox username |
+| `ADMIN_PASSWORD_HASH` | Required | Secret | Bcrypt hash, not a plaintext password |
+| `JWT_SECRET` | Required | Secret | Cryptographically random secret of at least 32 characters |
+| `SQLITE_DATABASE_PATH` | Local only | Normal | Optional path for the local SQLite file |
+| `DISABLE_EMAIL` | Local/test only | Normal | Set to `true` to suppress real email during development or tests |
+| `PORT` | Local only | Normal | Local API port; defaults to `5001` |
+
+Do not prefix backend variables with `VITE_`. Vite variables are public in browser bundles.
+
+## Create secure admin values
+
+Use a private username and a unique password of at least 12 characters:
 
 ```powershell
 Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
-Copy-Item .env.example .env
+npm.cmd run setup:admin -- your-private-username "your-unique-admin-password"
 ```
 
-Frontend `.env` (optional for local development because Vite proxies `/api` to
-port 5001, but required when the production frontend and API use different origins):
-
-```dotenv
-VITE_API_URL=http://localhost:5001
-```
-
-Create the backend environment file only if it does not already exist:
-
-```powershell
-Set-Location backend
-Copy-Item .env.example .env
-```
-
-Backend variables:
-
-| Variable | Purpose |
-|---|---|
-| `PORT` | API port; local default is `5001` |
-| `CLIENT_ORIGIN` | Allowed frontend origin; comma-separated origins are supported |
-| `DATABASE_PATH` | Optional absolute SQLite path; blank uses `backend/portfolio.db` |
-| `EMAIL_USER` | Gmail address that receives notifications |
-| `EMAIL_APP_PASSWORD` | A newly generated Gmail App Password |
-| `ADMIN_USERNAME` | Private inbox username |
-| `ADMIN_PASSWORD_HASH` | Bcrypt hash generated by the setup command |
-| `JWT_SECRET` | Random secret of at least 32 characters |
-
-Never place real values in `.env.example`, Git, screenshots, issues, or frontend variables.
-
-## Admin setup
-
-Choose a private username and a unique password containing at least 12 characters:
-
-```powershell
-Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio\backend"
-npm.cmd run setup:admin -- your-username "your-new-private-password"
-```
-
-This writes a bcrypt hash and a cryptographically random JWT secret to `backend/.env`. It does not store the plaintext admin password. Avoid using a shared terminal because the command can remain in shell history.
-
-## Gmail setup
-
-1. Enable two-step verification on the Gmail account.
-2. Create a new Gmail App Password.
-3. Put the Gmail address in `EMAIL_USER` and the new App Password in `EMAIL_APP_PASSWORD` inside `backend/.env`.
-4. Revoke any App Password that was previously exposed.
-
-Email is deliberately disabled during automated tests. A message is always saved before notification is attempted; if Gmail is temporarily unavailable, the API honestly reports that the message was received without losing it.
+This writes `ADMIN_USERNAME`, a bcrypt `ADMIN_PASSWORD_HASH`, and a random `JWT_SECRET` to the ignored root `.env`. It never saves the plaintext password. Copy the generated values into Vercel's encrypted environment variables.
 
 ## Local development
 
-Backend terminal:
+Without `DATABASE_URL`, the API automatically uses ignored local SQLite storage.
+
+Terminal 1:
 
 ```powershell
-Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio\backend"
-npm.cmd run dev
+Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
+npm.cmd run dev:api
 ```
 
-Frontend terminal:
+Terminal 2:
 
 ```powershell
 Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
@@ -135,92 +86,64 @@ npm.cmd run dev
 
 - Portfolio: `http://localhost:5173`
 - Admin inbox: `http://localhost:5173/admin`
-- API: `http://localhost:5001`
-- Health endpoint: `http://localhost:5001/api/health`
+- API health: `http://localhost:5001/api/health`
 
-## Checks and tests
+Vite proxies `/api` to the local API. Production uses same-origin Vercel Functions and does not need `VITE_API_URL`.
 
-```powershell
-Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
-npm.cmd run lint
-npm.cmd run build
+## Vercel-only deployment
 
-Set-Location backend
-npm.cmd run check
-npm.cmd test
-```
+### 1. Import the existing GitHub repository
 
-The API test uses a temporary SQLite database and test-only credentials. It does not touch the portfolio database or send email.
+In Vercel, choose **Add New → Project**, import `Konain280/my-portfolio`, and keep the repository root as the Root Directory. Vercel reads `vercel.json`; the framework is Vite, build command is `npm run build`, and output directory is `dist`.
 
-## Production build
+### 2. Create and connect Neon Postgres
 
-Set `VITE_API_URL` to the real HTTPS backend URL in the frontend host, then build:
+In the Vercel project, open **Storage/Marketplace**, install **Neon**, create a Postgres database in a region near the Vercel functions, and connect it to this project for Production and Preview. The integration supplies `DATABASE_URL`. Do not paste it into source files.
 
-```powershell
-npm.cmd run build
-npm.cmd run preview
-```
+No manual SQL migration is required for a new database. The API safely creates the `contacts` table with `CREATE TABLE IF NOT EXISTS` when it first connects.
 
-The generated site is in `dist/`. `vercel.json` enables direct access to the `/admin` SPA route on Vercel.
+### 3. Add server environment variables
 
-## Deployment
-
-### Recommended simple setup
-
-- Frontend: Vercel, using the repository root and `VITE_API_URL` environment variable.
-- Backend: Render Node web service, using `backend` as the root directory.
-- Database: SQLite only when the backend has a persistent disk mounted at the path used by `DATABASE_PATH`.
-
-Render's normal service filesystem is ephemeral. Never deploy this SQLite configuration without the persistent disk defined in `render.yaml`, or contact records will be lost during restarts/deployments. A persistent disk also limits the backend to one service instance. For multi-instance scaling, migrate the database layer to managed PostgreSQL first.
-
-### Backend deployment values
-
-Supply these in the host dashboard—never commit them:
+In **Project Settings → Environment Variables**, add the following for Production and Preview:
 
 ```text
-CLIENT_ORIGIN=<real HTTPS frontend origin>
-DATABASE_PATH=/opt/render/project/src/backend/storage/portfolio.db
-EMAIL_USER=<owner Gmail address>
-EMAIL_APP_PASSWORD=<new Gmail App Password>
-ADMIN_USERNAME=<private admin username>
-ADMIN_PASSWORD_HASH=<generated bcrypt hash>
-JWT_SECRET=<long random secret>
+CLIENT_ORIGIN=https://your-production-domain.vercel.app
+EMAIL_USER=your-gmail-address
+EMAIL_APP_PASSWORD=your-new-gmail-app-password
+ADMIN_USERNAME=your-private-admin-username
+ADMIN_PASSWORD_HASH=your-generated-bcrypt-hash
+JWT_SECRET=your-generated-random-secret
 ```
 
-Render supplies `PORT`; the server reads it automatically. The included blueprint mounts `/opt/render/project/src/backend/storage` as persistent storage.
+`DATABASE_URL` should already be supplied by Neon. Do not add `SQLITE_DATABASE_PATH`, `DISABLE_EMAIL`, `PORT`, or any `VITE_API_URL` in Vercel.
 
-### Frontend deployment value
+For the first preview deployment, Vercel automatically allows the current `VERCEL_URL`. `CLIENT_ORIGIN` is still recommended for the stable production/custom domain.
 
-```text
-VITE_API_URL=<real HTTPS backend origin>
-```
+### 4. Deploy and verify
 
-After both services deploy, update `CLIENT_ORIGIN` with the exact frontend origin and rebuild the frontend with the final backend origin.
+Trigger a deployment from the Vercel dashboard or push a new commit. Then verify:
 
-## Security notes
+1. Open `/api/health` and confirm `success: true`, `databaseType: "postgresql"`, and `emailConfigured: true`.
+2. Submit a real message through the contact form and confirm it appears in Neon and arrives by email.
+3. Open `/admin`, sign in, refresh the inbox, mark the test message read, and delete it.
+4. Verify `/admin` opens directly, the CV downloads, and the profile image and favicon load.
 
-- `.env`, database files, dependencies, builds, logs, and coverage are ignored by Git.
-- Admin credentials exist only in backend environment variables.
-- JWTs expire after two hours and are stored in browser `sessionStorage`.
-- Admin endpoints require a valid Bearer token.
-- Login and contact routes are rate-limited in memory.
-- The contact form includes server validation, a honeypot, and a 20 KB request limit.
-- In-memory rate limits reset when the backend restarts and are per-instance. Use a shared rate-limit store if the API is later scaled horizontally.
+If a custom domain is added later, update `CLIENT_ORIGIN` to that exact HTTPS origin and redeploy.
 
-## GitHub setup
+## Security and persistence
 
-Review the staged file list before committing:
+- Secrets exist only in server-side environment variables.
+- `.env`, SQLite files, `node_modules`, `dist`, logs, and coverage are ignored.
+- Production refuses to fall back to SQLite if `DATABASE_URL` is absent.
+- Queries use parameterized Neon SQL templates.
+- Admin endpoints require a correctly issued Bearer JWT.
+- API responses use no-store and browser security headers.
+- CORS permits configured, current Vercel preview, production, and localhost origins.
+- Contact input has server validation, a honeypot, a 20 KB limit, and best-effort per-instance rate limiting.
+- Gmail failure does not discard a saved contact message.
 
-```powershell
-Set-Location "C:\Users\Fine Traders\Desktop\portfolio\my-portfolio"
-git status
-git check-ignore -v backend/.env backend/portfolio.db node_modules dist
-git add .
-git status
-git commit -m "Complete production-ready portfolio"
-git branch -M main
-git remote add origin <your-real-GitHub-repository-URL>
-git push -u origin main
-```
+Vercel Functions and Neon are documented at:
 
-Do not run `git add -f` on ignored environment or database files. No remote repository is created or pushed automatically by this project.
+- https://vercel.com/docs/functions/runtimes/node-js
+- https://vercel.com/docs/marketplace-storage
+- https://neon.com/docs/serverless/serverless-driver

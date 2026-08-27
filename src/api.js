@@ -1,7 +1,3 @@
-// Use same-origin requests by default. Local development proxies `/api` to the
-// backend, while split production deployments set VITE_API_URL explicitly.
-const API_URL = (import.meta.env.VITE_API_URL || "").trim().replace(/\/$/, "");
-
 export class ApiError extends Error {
   constructor(message, status) {
     super(message);
@@ -13,7 +9,7 @@ export class ApiError extends Error {
 export async function apiRequest(path, options = {}) {
   let response;
   try {
-    response = await fetch(`${API_URL}${path}`, options);
+    response = await fetch(path, options);
   } catch {
     throw new ApiError("The server is unavailable. Please try again later.", 0);
   }
