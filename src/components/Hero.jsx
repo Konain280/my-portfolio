@@ -1,82 +1,32 @@
+import { motion } from "framer-motion";
+import { ArrowRight, Download, Mail, MapPin } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { buttonVariants } from "./ui/button-variants";
+
 function Hero() {
   return (
     <section id="home" className="hero-section">
+      <div className="hero-glow" aria-hidden="true" />
       <div className="container hero-container">
-
-        {/* Left Side */}
-        <div className="hero-content">
-
-          <p className="hero-small-text">
-            HELLO, I'M
-          </p>
-
-          <h1>
-            Konain <span>Tahir</span>
-          </h1>
-
-          <h2>
-            Computer Science Student & Aspiring Full-Stack Developer
-          </h2>
-
-          <p className="hero-description">
-            I'm a Computer Science student at COMSATS University Islamabad,
-            passionate about building modern web applications, software
-            solutions and intelligent systems. Currently developing my
-            skills in React, JavaScript, Node.js, Python and databases.
-          </p>
-
+        <motion.div className="hero-content" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
+          <p className="hero-small-text"><span /> AVAILABLE FOR INTERNSHIPS & COLLABORATION</p>
+          <h1>Konain <span>Tahir</span></h1>
+          <h2>Full-stack developer building practical web and AI products.</h2>
+          <p className="hero-description">I’m a Computer Science student at COMSATS University Islamabad who turns coursework and ideas into working software—from data-structure simulations to secure full-stack applications.</p>
           <div className="hero-buttons">
-
-            <a href="#projects" className="primary-button">
-              View My Projects →
-            </a>
-
-            <a
-              href="/Konain-CV.pdf"
-              className="secondary-button"
-              download
-            >
-              Download CV
-            </a>
-
+            <a href="#projects" className={buttonVariants({ variant: "primary" })}>View selected work <ArrowRight size={17} /></a>
+            <a href="/Konain-CV.pdf" className={buttonVariants({ variant: "outline" })} download><Download size={17} /> Download CV</a>
           </div>
-
           <div className="hero-socials">
-
-            <a
-              href="https://github.com/Konain280"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
-
-            <a href="#contact">
-              Contact Me
-            </a>
-
+            <a href="https://github.com/Konain280" target="_blank" rel="noreferrer"><FaGithub size={17} /> GitHub</a>
+            <a href="mailto:konaintahir22@gmail.com"><Mail size={17} /> Email</a>
+            <span><MapPin size={17} /> Sahiwal, Pakistan</span>
           </div>
-
-        </div>
-
-        {/* Right Side - Photo */}
-        <div className="hero-image-container">
-
-          <div className="hero-image-border">
-            <img
-              src="/profile.jpg"
-              alt="Konain Tahir"
-              className="profile-image"
-            />
-          </div>
-
-          <div className="hero-badge">
-            <strong>BSCS</strong>
-            <span>Computer Science</span>
-          </div>
-
-        </div>
-
+        </motion.div>
+        <motion.div className="hero-image-container" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.12 }}>
+          <div className="hero-image-border"><img src="/profile.jpg" alt="Konain Tahir" className="profile-image" /></div>
+          <div className="hero-badge"><strong>BSCS</strong><span>Class of 2027</span></div>
+        </motion.div>
       </div>
     </section>
   );

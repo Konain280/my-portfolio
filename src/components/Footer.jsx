@@ -1,3 +1,6 @@
+import { Mail } from "lucide-react";
+import { FaGithub, FaMedium } from "react-icons/fa";
+
 function Footer() {
   return (
     <footer className="footer">
@@ -30,8 +33,12 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              GitHub
+              <FaGithub size={16} /> GitHub
             </a>
+
+            <a href="https://medium.com/@konaintahir22" target="_blank" rel="noreferrer"><FaMedium size={17} /> Medium</a>
+
+            <a href="mailto:konaintahir22@gmail.com"><Mail size={16} /> Email</a>
 
           </div>
 

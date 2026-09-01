@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { apiRequest } from "../api";
+import { Mail } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 const emptyForm = { name: "", email: "", message: "", website: "" };
 
@@ -40,8 +42,8 @@ function Contact() {
             <h3>Let's work together.</h3>
             <p>Have a project, opportunity, or question? Send me a message and I'll get back to you.</p>
             <div className="contact-details">
-              <div className="contact-detail"><div className="contact-icon" aria-hidden="true">@</div><div><small>Email</small><a href="mailto:konaintahir22@gmail.com">konaintahir22@gmail.com</a></div></div>
-              <div className="contact-detail"><div className="contact-icon" aria-hidden="true">&lt;/&gt;</div><div><small>GitHub</small><a href="https://github.com/Konain280" target="_blank" rel="noreferrer">github.com/Konain280</a></div></div>
+              <div className="contact-detail"><div className="contact-icon" aria-hidden="true"><Mail size={20} /></div><div><small>Email</small><a href="mailto:konaintahir22@gmail.com">konaintahir22@gmail.com</a></div></div>
+              <div className="contact-detail"><div className="contact-icon" aria-hidden="true"><FaGithub size={20} /></div><div><small>GitHub</small><a href="https://github.com/Konain280" target="_blank" rel="noreferrer">github.com/Konain280</a></div></div>
             </div>
           </div>
           <form className="contact-form" onSubmit={handleSubmit} noValidate>
