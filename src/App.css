@@ -1499,3 +1499,94 @@ body {
   .project-links { flex-wrap: wrap; margin-top: 0; }
   .footer-links { align-items: flex-start; flex-direction: column; }
 }
+
+/* Professional warm theme — quieter scale and everyday readability */
+:root {
+  --bg: #f6f4ee;
+  --bg-soft: #ece9e1;
+  --card: #fffdf8;
+  --text: #20251f;
+  --muted: #646a63;
+  --border: #cbc9c0;
+  --accent: #315f4b;
+  --accent-light: #3c725b;
+  --paper: #e7e3d9;
+  --ink: #20251f;
+}
+
+body { background: var(--bg); color: var(--text); font-size: 16px; }
+.navbar { background: rgba(246,244,238,.94); }
+.logo-mark { background: var(--accent); color: #fff !important; }
+.navbar nav a:hover { background: #e7e4dc; }
+.nav-button { background: transparent; }
+.menu-toggle { background: var(--bg); }
+.menu-toggle span { background: var(--text); }
+
+.hero-section { min-height: auto; padding: 92px 0 100px; }
+.hero-content h1 { max-width: 760px; font-size: clamp(44px, 6.3vw, 76px); line-height: .98; letter-spacing: -.045em; }
+.hero-content h1 span { margin-top: 7px; color: var(--accent); font-size: .8em; line-height: 1.05; letter-spacing: -.035em; }
+.hero-content h2 { margin-top: 28px; font-size: clamp(18px, 2vw, 23px); line-height: 1.45; }
+.hero-description { color: var(--muted); font-size: 15px; line-height: 1.75; }
+.hero-socials { border-color: var(--border); }
+.hero-socials a, .hero-socials span { color: var(--muted); }
+.hero-proof { border-color: var(--border); }
+.hero-proof div + div { border-color: var(--border); }
+.hero-proof dt { color: var(--text); font-size: 21px; }
+.hero-image-border { height: 450px; }
+.profile-image { filter: saturate(.9) contrast(1.01); }
+.hero-badge { background: var(--card); color: var(--text); box-shadow: 9px 9px 0 #b8c9bf; border: 1px solid var(--border); }
+.hero-badge strong { color: var(--text); }
+.hero-badge span { color: var(--muted); }
+
+.ui-button-primary { background: var(--accent); color: #fff; }
+.ui-button-primary:hover { background: #264b3b; color: #fff; }
+.ui-button-outline { border-color: #aaa99f; color: var(--text); background: transparent; }
+
+.section { padding: 100px 0; }
+.section-dark { background: var(--bg-soft); }
+.section-heading { margin-bottom: 52px; }
+.section-heading p { color: var(--accent); }
+.section-heading h2 { font-size: clamp(34px, 4.2vw, 50px); line-height: 1.08; letter-spacing: -.032em; }
+.about-text h3 { font-size: clamp(25px, 2.7vw, 34px); }
+.about-text p { color: var(--muted); }
+.info-card, .about-info { border-color: var(--border); }
+.skill-category { background: var(--card); }
+.skill-category:hover { background: #f9f7f1; }
+.skills-category-grid { background: var(--border); border-color: var(--border); }
+.skill-tags span { color: var(--muted); }
+
+.projects-section { background: var(--paper); color: var(--ink); }
+.projects-section .section-heading p, .projects-section .project-number { color: var(--accent); }
+.project-card h3 { font-size: clamp(21px, 2.2vw, 30px); }
+.project-card, .project-card:first-child { padding: 30px 0; border-color: #bdb9af; }
+.project-top .ui-badge, .projects-section .section-heading-row > span, .projects-section .project-card > p { color: #656860; }
+.project-links a:hover { color: var(--accent); }
+
+.education-dot { background: var(--accent); border-color: var(--accent); color: #fff; }
+.education-card { background: rgba(255,255,255,.28); }
+.contact-info > p, .contact-detail small { color: var(--muted); }
+.contact-icon { background: var(--card); }
+.form-group input, .form-group textarea { color: var(--text); border-color: #a9aba4; }
+.form-group input::placeholder, .form-group textarea::placeholder { color: #8b8f88; }
+.contact-form button { background: var(--accent); color: #fff; }
+
+.footer { background: #233027; color: #f5f4ef; }
+.footer p, .footer-links a { color: #c6cec8; }
+.footer-bottom { border-color: #48544b; }
+
+.admin-shell { background: var(--bg); }
+.admin-login, .message-card { background: var(--card); }
+
+@media (max-width: 900px) {
+  .navbar nav { background: rgba(246,244,238,.99); }
+  .hero-section { padding: 70px 0 88px; }
+}
+
+@media (max-width: 650px) {
+  body { font-size: 15px; }
+  .hero-content h1 { font-size: clamp(40px, 13vw, 58px); }
+  .hero-content h2 { font-size: 18px; }
+  .section { padding: 76px 0; }
+  .section-heading h2 { font-size: clamp(32px, 10vw, 42px); }
+  .hero-image-border { height: 390px; }
+}

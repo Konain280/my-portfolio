@@ -9,8 +9,8 @@ function Hero() {
       <div className="container hero-container">
         <motion.div className="hero-content" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
           <p className="hero-small-text"><span /> OPEN TO INTERNSHIPS · 2026</p>
-          <h1>I build software that <span>does the job.</span></h1>
-          <h2>Konain Tahir — computer science student and full-stack developer in Sahiwal.</h2>
+          <h1>Full-stack developer.<span>Computer science student.</span></h1>
+          <h2>I’m Konain Tahir, based in Sahiwal and studying at COMSATS University Islamabad.</h2>
           <p className="hero-description">I like projects with moving parts: data structures, databases, interfaces and the backend logic that holds them together. This site is where I document what I’m learning by building.</p>
           <div className="hero-buttons">
             <a href="#projects" className={buttonVariants({ variant: "primary" })}>View selected work <ArrowRight size={17} /></a>
