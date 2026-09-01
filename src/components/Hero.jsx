@@ -23,7 +23,7 @@ function Hero() {
         </motion.div>
         <motion.div className="hero-image-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
           <div className="hero-image-border"><img src="/profile.jpg" alt="Konain Tahir" className="profile-image" width="480" height="600" fetchPriority="high" /></div>
-          <p className="hero-image-caption">Based in Sahiwal, Pakistan</p>
+          <p className="hero-image-caption">Based in Faisalabad, Pakistan</p>
         </motion.div>
       </div>
     </section>
