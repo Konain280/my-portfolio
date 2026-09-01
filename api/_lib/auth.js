@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -16,8 +17,14 @@ function getAuthConfig() {
 
 export async function login(username, password) {
   const config = getAuthConfig();
-  if (username !== config.username || !(await bcrypt.compare(password, config.passwordHash))) return null;
+  const usernameMatches = crypto.timingSafeEqual(
+    crypto.createHash("sha256").update(username).digest(),
+    crypto.createHash("sha256").update(config.username).digest(),
+  );
+  const passwordMatches = await bcrypt.compare(password, config.passwordHash);
+  if (!usernameMatches || !passwordMatches) return null;
   return jwt.sign({ username: config.username }, config.jwtSecret, {
+    algorithm: "HS256",
     expiresIn: "2h",
     issuer: "konain-portfolio-api",
     audience: "konain-portfolio-admin",
@@ -28,6 +35,7 @@ export function verifyToken(token) {
   try {
     const config = getAuthConfig();
     return jwt.verify(token, config.jwtSecret, {
+      algorithms: ["HS256"],
       issuer: "konain-portfolio-api",
       audience: "konain-portfolio-admin",
     });

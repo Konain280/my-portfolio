@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const testDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "portfolio-api-test-"));
 process.env.NODE_ENV = "test";
@@ -54,6 +55,14 @@ test("serverless contact, authentication, and admin endpoints work end to end", 
 
   response = await fetch(`${baseUrl}/api/contact`);
   assert.equal(response.status, 401);
+  const expiredToken = jwt.sign({ username: "audit-admin" }, process.env.JWT_SECRET, {
+    algorithm: "HS256",
+    expiresIn: -1,
+    issuer: "konain-portfolio-api",
+    audience: "konain-portfolio-admin",
+  });
+  response = await fetch(`${baseUrl}/api/contact`, { headers: { Authorization: `Bearer ${expiredToken}` } });
+  assert.equal(response.status, 401);
   response = await fetch(`${baseUrl}/api/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: "audit-admin", password: "wrong-password" }) });
   assert.equal(response.status, 401);
   response = await fetch(`${baseUrl}/api/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: "audit-admin", password: testPassword }) });
@@ -73,6 +82,8 @@ test("serverless contact, authentication, and admin endpoints work end to end", 
   assert.equal(response.status, 404);
   response = await fetch(`${baseUrl}/api/health`, { headers: { Origin: "https://evil.example" } });
   assert.equal(response.status, 403);
+  response = await fetch(`${baseUrl}/api/health`, { method: "OPTIONS", headers: { Origin: "http://localhost:5173" } });
+  assert.equal(response.status, 204);
 });
 
 test.after(async () => {

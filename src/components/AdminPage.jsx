@@ -3,6 +3,13 @@ import { ApiError, apiRequest } from "../api";
 
 const TOKEN_KEY = "portfolio_admin_token";
 
+function parseDatabaseDate(value) {
+  if (!value) return null;
+  const hasTimeZone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(value);
+  const date = new Date(hasTimeZone ? value : `${value.replace(" ", "T")}Z`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 function AdminPage() {
   const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_KEY) || "");
   const [messages, setMessages] = useState([]);
@@ -105,7 +112,7 @@ function AdminPage() {
       {loading ? <p>Loading messages...</p> : messages.length === 0 ? <div className="empty-state"><h2>No messages yet</h2><p>New portfolio enquiries will appear here.</p></div> : (
         <div className="admin-messages">{messages.map((message) => (
           <article className={`message-card ${message.read_at ? "is-read" : "is-unread"}`} key={message.id}>
-            <div className="message-header"><div><div className="message-title"><h2>{message.name}</h2>{!message.read_at && <span className="unread-badge">New</span>}</div><a href={`mailto:${message.email}`}>{message.email}</a></div><time dateTime={message.created_at}>{new Date(`${message.created_at}Z`).toLocaleString()}</time></div>
+            <div className="message-header"><div><div className="message-title"><h2>{message.name}</h2>{!message.read_at && <span className="unread-badge">New</span>}</div><a href={`mailto:${message.email}`}>{message.email}</a></div><time dateTime={message.created_at}>{parseDatabaseDate(message.created_at)?.toLocaleString() || "Unknown date"}</time></div>
             <p>{message.message}</p><div className="message-actions">{!message.read_at && <button type="button" onClick={() => markRead(message)}>Mark as read</button>}<button type="button" className="danger-button" onClick={() => deleteMessage(message)}>Delete</button></div>
           </article>
         ))}</div>
