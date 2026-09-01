@@ -1,60 +1,23 @@
 const skillCategories = [
-  {
-    title: "Programming",
-    skills: ["Java", "JavaScript", "Python", "C++"],
-  },
-  {
-    title: "Frontend",
-    skills: ["HTML", "CSS", "JavaScript", "React"],
-  },
-  {
-    title: "Backend",
-    skills: ["Node.js", "Express.js", "REST APIs"],
-  },
-  {
-    title: "Database",
-    skills: ["MySQL", "SQLite", "Database Systems"],
-  },
-  {
-    title: "AI & Algorithms",
-    skills: ["Machine Learning", "A*", "Dijkstra", "Data Structures"],
-  },
-  {
-    title: "Tools",
-    skills: ["Git", "GitHub", "VS Code", "Postman", "XAMPP"],
-  },
+  { title: "Frontend", description: "Interfaces and browser applications", skills: ["HTML", "CSS", "JavaScript", "React", "Vite"] },
+  { title: "Backend", description: "APIs and server-side development", skills: ["Node.js", "Express", "REST APIs", "Authentication"] },
+  { title: "Programming", description: "Languages used in coursework and projects", skills: ["Java", "C++", "Python", "JavaScript"] },
+  { title: "Data & tools", description: "Storage, testing and development workflow", skills: ["MySQL", "SQLite", "Git", "GitHub", "Postman", "VS Code"] },
 ];
 
 function Skills() {
   return (
-    <section id="skills" className="section section-dark">
-      <div className="container skills-layout">
-
-        <div className="section-heading">
-          <p>MY EXPERTISE</p>
-          <h2>Tools I actually work with.</h2>
-        </div>
-
-        <div className="skills-category-grid">
-
+    <section id="skills" className="section section-muted">
+      <div className="container">
+        <div className="section-heading"><p>Skills</p><h2>Technologies I work with</h2></div>
+        <div className="skills-list">
           {skillCategories.map((category) => (
-            <div className="skill-category" key={category.title}>
-
-              <h3>{category.title}</h3>
-
-              <div className="skill-tags">
-                {category.skills.map((skill) => (
-                  <span key={skill}>
-                    {skill}
-                  </span>
-                ))}
-              </div>
-
+            <div className="skill-group" key={category.title}>
+              <div><h3>{category.title}</h3><p>{category.description}</p></div>
+              <ul>{category.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul>
             </div>
           ))}
-
         </div>
-
       </div>
     </section>
   );
