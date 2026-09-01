@@ -754,10 +754,8 @@ textarea {
   width: 45px;
   height: 45px;
   flex: 0 0 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
+  display: grid;
+  place-items: center;
 
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -765,13 +763,12 @@ textarea {
   background: var(--card);
 }
 
-.contact-detail .contact-icon { align-items: center; justify-content: center; }
-.contact-icon svg { display: block; margin: auto; }
+.contact-icon svg { display: block; }
 
 svg { flex: 0 0 auto; }
 a svg, button svg { align-self: center; }
 
-.contact-detail div {
+.contact-detail > div:not(.contact-icon) {
   display: flex;
   flex-direction: column;
   gap: 5px;
