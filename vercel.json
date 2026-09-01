@@ -4,6 +4,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/api/contact/:id/read", "destination": "/api/contact/[id]/read" },
+    { "source": "/api/contact/:id", "destination": "/api/contact/[id]" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

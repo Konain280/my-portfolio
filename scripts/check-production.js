@@ -13,8 +13,14 @@ if (missingVariables.length) throw new Error(`.env.example is missing: ${missing
 const config = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 if (config.framework !== "vite" || config.outputDirectory !== "dist") throw new Error("vercel.json does not describe the Vite production output.");
 if (config.buildCommand !== "npm run build") throw new Error("vercel.json must run the production Vite build.");
-if (config.rewrites?.some(({ source }) => source.startsWith("/api/"))) {
-  throw new Error("Vercel API functions must use their native file-system routes, not rewrites.");
+const requiredDynamicRewrites = [
+  ["/api/contact/:id/read", "/api/contact/[id]/read"],
+  ["/api/contact/:id", "/api/contact/[id]"],
+];
+for (const [source, destination] of requiredDynamicRewrites) {
+  if (!config.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
+    throw new Error(`vercel.json is missing the dynamic API rewrite from ${source} to ${destination}.`);
+  }
 }
 if (!config.rewrites?.some(({ source, destination }) => source === "/(.*)" && destination === "/index.html")) {
   throw new Error("vercel.json must preserve direct navigation to the React admin route.");
