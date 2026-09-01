@@ -21,8 +21,8 @@ The frontend and API use the same Vercel origin. Browser requests use `/api/...`
 | `/api/contact` | POST | Validate and save a contact message, then notify by email |
 | `/api/login` | POST | Authenticate the administrator and issue a JWT |
 | `/api/contact` | GET | Return messages to an authenticated administrator |
-| `/api/contact/:id/read` | PATCH | Mark a message as read |
-| `/api/contact/:id` | DELETE | Delete a message |
+| `/api/contact/read?id=:id` | PATCH | Mark a message as read |
+| `/api/contact/delete?id=:id` | DELETE | Delete a message |
 
 ## Install and verify
 

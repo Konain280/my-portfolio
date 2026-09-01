@@ -82,7 +82,7 @@ function AdminPage() {
   async function markRead(message) {
     if (message.read_at) return;
     try {
-      await apiRequest(`/api/contact/${message.id}/read`, { method: "PATCH", headers: { Authorization: `Bearer ${token}` } });
+      await apiRequest(`/api/contact/read?id=${encodeURIComponent(message.id)}`, { method: "PATCH", headers: { Authorization: `Bearer ${token}` } });
       setMessages((current) => current.map((item) => item.id === message.id ? { ...item, read_at: new Date().toISOString() } : item));
     } catch (error) { handleApiError(error); }
   }
@@ -90,7 +90,7 @@ function AdminPage() {
   async function deleteMessage(message) {
     if (!window.confirm(`Delete the message from ${message.name}? This cannot be undone.`)) return;
     try {
-      await apiRequest(`/api/contact/${message.id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      await apiRequest(`/api/contact/delete?id=${encodeURIComponent(message.id)}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       setMessages((current) => current.filter((item) => item.id !== message.id));
     } catch (error) { handleApiError(error); }
   }

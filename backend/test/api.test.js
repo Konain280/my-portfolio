@@ -74,11 +74,11 @@ test("serverless contact, authentication, and admin endpoints work end to end", 
   const messages = (await response.json()).messages;
   const message = messages.find((item) => item.email === "test@example.com");
   assert.ok(message);
-  response = await fetch(`${baseUrl}/api/contact/${message.id}/read`, { method: "PATCH", headers });
+  response = await fetch(`${baseUrl}/api/contact/read?id=${message.id}`, { method: "PATCH", headers });
   assert.equal(response.status, 200);
-  response = await fetch(`${baseUrl}/api/contact/${message.id}`, { method: "DELETE", headers });
+  response = await fetch(`${baseUrl}/api/contact/delete?id=${message.id}`, { method: "DELETE", headers });
   assert.equal(response.status, 200);
-  response = await fetch(`${baseUrl}/api/contact/${message.id}`, { method: "DELETE", headers });
+  response = await fetch(`${baseUrl}/api/contact/delete?id=${message.id}`, { method: "DELETE", headers });
   assert.equal(response.status, 404);
   response = await fetch(`${baseUrl}/api/health`, { headers: { Origin: "https://evil.example" } });
   assert.equal(response.status, 403);

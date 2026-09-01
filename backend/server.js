@@ -19,6 +19,8 @@ function routeRequest(req) {
   if (url.pathname === "/api/health") return healthHandler;
   if (url.pathname === "/api/login") return loginHandler;
   if (url.pathname === "/api/contact") return contactHandler;
+  if (url.pathname === "/api/contact/read") return contactReadHandler;
+  if (url.pathname === "/api/contact/delete") return contactIdHandler;
   let match = url.pathname.match(/^\/api\/contact\/(\d+)\/read$/);
   if (match) { req.query.id = match[1]; return contactReadHandler; }
   match = url.pathname.match(/^\/api\/contact\/(\d+)$/);
