@@ -28,11 +28,11 @@ const skillCategories = [
 function Skills() {
   return (
     <section id="skills" className="section section-dark">
-      <div className="container">
+      <div className="container skills-layout">
 
         <div className="section-heading">
           <p>MY EXPERTISE</p>
-          <h2>Skills & Technologies</h2>
+          <h2>Tools I actually work with.</h2>
         </div>
 
         <div className="skills-category-grid">

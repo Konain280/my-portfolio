@@ -15,7 +15,7 @@ function Projects() {
   return (
     <section id="projects" className="section projects-section">
       <div className="container">
-        <div className="section-heading section-heading-row"><div><p>SELECTED WORK</p><h2>Projects built to solve real problems.</h2></div><span>Every card links to the source.</span></div>
+        <div className="section-heading section-heading-row"><div><p>SELECTED WORK · 2025—26</p><h2>Built, debugged and documented.</h2></div><span>Real repositories, honest descriptions, no concept projects.</span></div>
         <div className="projects-grid">
           {projects.map((project, index) => (
             <motion.article className="project-card" key={project.number} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.45, delay: index * 0.06 }}>

@@ -36,11 +36,11 @@ function Contact() {
   return (
     <section id="contact" className="section section-dark">
       <div className="container">
-        <div className="section-heading"><p>GET IN TOUCH</p><h2>Contact Me</h2></div>
+        <div className="section-heading"><p>GET IN TOUCH</p><h2>Have a useful problem to solve?</h2></div>
         <div className="contact-grid">
           <div className="contact-info">
-            <h3>Let's work together.</h3>
-            <p>Have a project, opportunity, or question? Send me a message and I'll get back to you.</p>
+            <h3>Let’s talk plainly.</h3>
+            <p>If you have an internship, a project that needs an extra pair of hands, or thoughtful feedback on my work, send a message. I read every one.</p>
             <div className="contact-details">
               <div className="contact-detail"><div className="contact-icon" aria-hidden="true"><Mail size={20} /></div><div><small>Email</small><a href="mailto:konaintahir22@gmail.com">konaintahir22@gmail.com</a></div></div>
               <div className="contact-detail"><div className="contact-icon" aria-hidden="true"><FaGithub size={20} /></div><div><small>GitHub</small><a href="https://github.com/Konain280" target="_blank" rel="noreferrer">github.com/Konain280</a></div></div>

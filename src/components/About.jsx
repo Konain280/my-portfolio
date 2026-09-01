@@ -5,7 +5,7 @@ function About() {
 
         <div className="section-heading">
           <p>ABOUT ME</p>
-          <h2>Who I Am</h2>
+          <h2>A student who learns by shipping.</h2>
         </div>
 
         <div className="about-grid">
@@ -14,8 +14,7 @@ function About() {
           <div className="about-text">
 
             <h3>
-              Computer Science student passionate about
-              software and modern web development.
+              I care more about working software than impressive-sounding stacks.
             </h3>
 
             <p>
@@ -27,16 +26,11 @@ function About() {
             </p>
 
             <p>
-              I'm particularly interested in building practical software
-              solutions and modern web applications. I'm currently
-              developing my skills in JavaScript, React, Node.js, Python,
-              databases and full-stack development.
+              I started with Java and data structures, then moved toward web development because I wanted other people to actually use what I built. Today I work mostly with JavaScript, React, Node.js, relational databases and Python.
             </p>
 
             <p>
-              I enjoy turning ideas into working projects and continuously
-              improving my programming and problem-solving skills through
-              hands-on projects.
+              My process is simple: understand the problem, make the smallest useful version, test it, and improve the parts that matter. I’m looking for an internship where I can contribute, get reviewed by experienced engineers and grow faster.
             </p>
 
           </div>

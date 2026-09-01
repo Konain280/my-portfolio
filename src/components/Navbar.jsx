@@ -20,7 +20,7 @@ function Navbar() {
   return (
     <header className="navbar">
       <div className="container nav-container">
-        <a href="#home" className="logo" onClick={() => setOpen(false)} aria-label="Konain Tahir, home">Konain<span>.</span></a>
+        <a href="#home" className="logo" onClick={() => setOpen(false)} aria-label="Konain Tahir, home"><span className="logo-mark">KT</span><span className="logo-name">Konain Tahir<small>Developer portfolio</small></span></a>
         <button
           type="button"
           className="menu-toggle"
