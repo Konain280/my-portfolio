@@ -753,9 +753,11 @@ textarea {
 .contact-icon {
   width: 45px;
   height: 45px;
-
-  display: grid;
-  place-items: center;
+  flex: 0 0 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -763,7 +765,8 @@ textarea {
   background: var(--card);
 }
 
-.contact-icon svg { display: block; }
+.contact-detail .contact-icon { align-items: center; justify-content: center; }
+.contact-icon svg { display: block; margin: auto; }
 
 svg { flex: 0 0 auto; }
 a svg, button svg { align-self: center; }
